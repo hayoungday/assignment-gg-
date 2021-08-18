@@ -84,15 +84,21 @@ void receive_packet(pcap_t* handle, Mac& mac, Ip ip){
                 printf("receive_packet_smac: %s\n",std::string(mac).c_str());
                 break;
             }
-            else if(ntohs(etharp->eth_.type_) == EthHdr::Arp && ntohs(etharp -> arp_.op_) == ArpHdr::Reply && etharp->arp_.tip() == ip){
+            else{
+                printf("wrong sip packet\n");
+                printf("mac: %s\n",std::string(mac).c_str());
+                printf("sip : %s\n\n",std::string(etharp->arp_.sip()).c_str());
+            }
+
+            if(ntohs(etharp->eth_.type_) == EthHdr::Arp && ntohs(etharp -> arp_.op_) == ArpHdr::Reply && etharp->arp_.tip() == ip){
                 mac = etharp->arp_.tmac();
                 printf("receive_packet_tmac: %s\n",std::string(mac).c_str());
                 break;
             }
             else{
-                printf("wrong packet\n");
+                printf("wrong tip packet\n");
                 printf("mac: %s\n",std::string(mac).c_str());
-                printf("Ip(myip) : %s\n\n",std::string(etharp->arp_.sip()).c_str());
+                printf("tip : %s\n\n",std::string(etharp->arp_.tip()).c_str());
             }
     }
 }
